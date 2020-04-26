@@ -58,9 +58,79 @@ ORDER BY emp_no;
 
 e) --The last step is to group the employees by the titles to find how many positions of each title will be open when people retire. We also calculated an average salary which is very informative and helps understand the the rate per employee and plan the budget
 select count(title), title, round(avg(salary),0) as avg_salary
+into current_ret_titles
 from recent_titles
 group by title;
 
 We saved these tables as csv files to provide the insights to the management
 
 Then we performed the second step to find the employees that would be eligible to participate in the mentorship program. So we created the following queries:
+
+-- Defining the list of employees who are aligible to participate in the mentorship program
+
+--1. Selecting only current employees with day of birth between 1/1/1965 and 12/31/1965
+select e.emp_no, e.first_name, e.last_name, e.birth_date, de.to_date
+into current_emp_1965
+from employees as e
+left join dept_emp as de
+on (e.emp_no = de.emp_no)
+where (e.birth_date between '1965-01-01' and '1965-12-31')
+and (de.to_date = '9999-01-01');
+
+select * from current_emp_1965;
+
+--2. Find out their titles to be able to count the number of employees of each title (with removing duplications)
+select emp_no, first_name, last_name, title, from_date, to_date
+into current_titles_1965
+from
+	(select ce.emp_no, ce.first_name, ce.last_name, tl.title, tl.from_date, ce.to_date,
+ 	row_number() over
+ 	(partition by (ce.emp_no)
+ 	order by tl.from_date desc) rn
+ 		from current_emp_1965 as ce
+		inner join titles as tl
+		on (ce.emp_no = tl.emp_no)
+ 	) temporarily
+where rn = 1
+order by emp_no;
+
+select * from current_titles_1965;
+
+-- Grouping by the titles:
+-- Defining the list of employees who are aligible to participate in the mentorship program
+
+--1. Selecting only current employees with day of birth between 1/1/1965 and 12/31/1965
+select e.emp_no, e.first_name, e.last_name, e.birth_date, de.to_date
+into current_emp_1965
+from employees as e
+left join dept_emp as de
+on (e.emp_no = de.emp_no)
+where (e.birth_date between '1965-01-01' and '1965-12-31')
+and (de.to_date = '9999-01-01');
+
+select * from current_emp_1965;
+
+--2. Find out their titles to be able to count the number of employees of each title (with removing duplications)
+select emp_no, first_name, last_name, title, from_date, to_date
+into current_titles_1965
+from
+	(select ce.emp_no, ce.first_name, ce.last_name, tl.title, tl.from_date, ce.to_date,
+ 	row_number() over
+ 	(partition by (ce.emp_no)
+ 	order by tl.from_date desc) rn
+ 		from current_emp_1965 as ce
+		inner join titles as tl
+		on (ce.emp_no = tl.emp_no)
+ 	) temporarily
+where rn = 1
+order by emp_no;
+
+select * from current_titles_1965;
+
+-- Grouping by the titles:
+select count(emp_no), title
+into count_titles_1965
+from current_titles_1965
+group by title;
+
+All files have been saved in csv files
