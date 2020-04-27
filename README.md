@@ -125,7 +125,7 @@ from
 where rn = 1
 order by emp_no;
 
-select * from current_titles_1965;
+The PH compaty has 1549 employees eligible for participating in the program.
 
 -- Grouping by the titles:
 select count(emp_no), title
@@ -133,4 +133,8 @@ into count_titles_1965
 from current_titles_1965
 group by title;
 
-All files have been saved in csv files
+This report shows us that the company currently doesn't have managers who are born in 1965 to mentor new employees when retired managers leave. And there are 2 manager positions that will be open soon.
+I would suggest to analyze the percentage of the employees of each title who are eligible nto train new employees against the retiring employees of each title. Thus the management will know if they have enough of resources for the mentorship program.
+
+Another suggestion that I would make is to analyze the retiring and training people of each title by departments. Depending on a department the training program may vary and the number of people may vary, too. There is a posibility that the company may have uneven distribution between open positions and the people can mentor. Thus they may want to review their approach of selection criteria.
+
