@@ -56,6 +56,8 @@ FROM
  ) tmp WHERE rn = 1
 ORDER BY emp_no;
 
+So the PH company has 33118 current employees that are retiring soon.
+
 e) --The last step is to group the employees by the titles to find how many positions of each title will be open when people retire. We also calculated an average salary which is very informative and helps understand the the rate per employee and plan the budget
 select count(title), title, round(avg(salary),0) as avg_salary
 into current_ret_titles
